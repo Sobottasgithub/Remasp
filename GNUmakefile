@@ -4,6 +4,12 @@ JAVA_CLASS = $(JAVA_FILES:.java=.class)
 XML_FMT   = xmlindent
 XML_FILES = $(shell find . -name '*.xml')
 
+MAIN_CLASS = remasp.Remasp
+
+remasp.jar: $(JAVA_FILES)
+	javac $(JAVA_FILES)
+	jar cfe $@ $(MAIN_CLASS) $$(find . -name '*.class')
+
 .PHONY: fmt
 fmt:
 	@echo "Formatting all Java files..."
@@ -11,9 +17,6 @@ fmt:
 		echo "  $$f"; \
 		$(JAVA_FMT) -i $$f; \
 	done
-
-remasp.jar: $(JAVA_CLASS)
-	jar cf $@ $(JAVA_CLASS)
 
 %.class: %.java
 	javac $<
